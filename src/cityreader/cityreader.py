@@ -1,6 +1,14 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
 
+class City:
+    def __init__(self, name, lat, lon):
+        self.name = name
+        self.lat = lat
+        self.lon = lon
+
+    def __str__(self):
+        return f"{self.name}, {self.lat}, {self.lon}"
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -16,12 +24,19 @@
 # should not be loaded into a City object.
 cities = []
 
+import csv
 def cityreader(cities=[]):
-  # TODO Implement the functionality to read from the 'cities.csv' file
-  # Ensure that the lat and lon valuse are all floats
-  # For each city record, create a new City instance and add it to the 
-  # `cities` list
-    
+    # TODO Implement the functionality to read from the 'cities.csv' file
+    # Ensure that the lat and lon valuse are all floats
+    # For each city record, create a new City instance and add it to the 
+    # `cities` list
+
+    with open('./cities.csv', 'r') as csv_file:
+        read_csv = csv.reader(csv_file)
+        heading = next(read_csv)
+        for line in read_csv:
+            cities.append(City(str(line[0]), float(line[3]), float(line[4])))
+
     return cities
 
 cityreader(cities)
@@ -62,10 +77,14 @@ for c in cities:
 # TODO Get latitude and longitude values from the user
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
-  # within will hold the cities that fall within the specified region
-  within = []
-  
-  # Go through each city and check to see if it falls within 
-  # the specified coordinates.
+    # within will hold the cities that fall within the specified region
+    lats = [lat1, lat2]
+    lons = [lon1, lon2]
+    lats.sort()
+    lons.sort()
 
-  return within
+    within = [region for region in cities if lats[0] <= region.lat <= lats[1] and lons[0] <= region.lon <= lons[1]]
+    
+    # Go through each city and check to see if it falls within 
+    # the specified coordinates.
+    return within
